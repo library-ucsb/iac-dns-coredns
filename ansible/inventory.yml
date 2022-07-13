@@ -1,0 +1,16 @@
+---
+
+bind_servers:
+  children:
+    primaries:
+    secondaries:
+
+primaries:
+  hosts:
+    ns1-ucsb-lib:
+      ansible_host: 10.3.254.130
+    
+secondaries:
+  hosts:
+    ns2-ucsb-lib:
+      ansible_host: 10.3.254.144

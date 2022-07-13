@@ -1,0 +1,12 @@
+{% for zone in zones %}
+{{ zone.zonename }} {
+    route53 {{ zone.zonename }}.:{{ zone.hosted_zone_id }} {
+      refresh {{ zone.zone_refresh }}
+    }
+    log
+    errors
+    health
+    ready
+}
+
+{% endfor %}
