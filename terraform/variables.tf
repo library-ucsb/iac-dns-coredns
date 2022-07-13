@@ -15,6 +15,11 @@ variable "repo_tfc_org" {
     type = string
 }
 
+variable "repo_tfc_working_directory" {
+    type    = string
+    default = "/"  
+}
+
 variable "repo_oauth_client_id" {
     type = string
 }

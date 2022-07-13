@@ -1,9 +1,10 @@
-github_owner            = "library-ucsb"
-repo_name               = "iac-dns-coredns"
-repo_description        = "coredns terraform"
-repo_oauth_client_id    = "oc-pga3NiSumJzwPVft"
-repo_tfc_org            = "library-ucsb-core"
-repo_github_org         = "library-ucsb"
+github_owner                = "library-ucsb"
+repo_name                   = "iac-dns-coredns"
+repo_description            = "coredns terraform"
+repo_oauth_client_id        = "oc-pga3NiSumJzwPVft"
+repo_tfc_org                = "library-ucsb-core"
+repo_tfc_working_directory  = "/terraform"
+repo_github_org             = "library-ucsb"
 
 hosted_zones = [
     "arn:aws:route53:::hostedzone/Z0925576K83WAB2RR2FS",    # library.ucsb.edu
