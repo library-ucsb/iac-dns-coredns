@@ -32,14 +32,9 @@ jobs:
 
       - name: "terraform: init"
         run: cd terraform; terraform init -upgrade
-        env:
-          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}        
     
       - name: "terraform: plan stage"
         id: plan
         run: cd terraform; terraform plan -no-color
-        env:
-          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
       

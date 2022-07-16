@@ -28,13 +28,13 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: "terraform: init"
-        run: cd terraform/zones; terraform init -upgrade
+        run: cd terraform; terraform init -upgrade
     
       - name: "terraform: plan stage"
         id: plan
-        run: cd terraform/zones; terraform plan -no-color
+        run: cd terraform; terraform plan -no-color
       
       - name: "terraform: apply"
         id: apply
-        run: cd terraform/zones; terraform apply -auto-approve
+        run: cd terraform; terraform apply -auto-approve
       
