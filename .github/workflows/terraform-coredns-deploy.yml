@@ -1,6 +1,6 @@
 
 
-name: "terraform: initialize and plan - route53 / coredns integration"
+name: "terraform: initialize, plan and deploy - route53 / coredns integration"
 on:
   push:
     branches:
