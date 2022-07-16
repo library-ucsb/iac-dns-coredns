@@ -1,0 +1,45 @@
+
+
+name: "terraform: initialize and plan - route53 / coredns integration"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '!main'
+      - 'dev'
+      - 'dev-**'
+    paths:
+      - 'terraform/**'
+      - '.github/workflows/terraform-*.yml'
+    
+jobs:
+
+  init:
+    name: "terraform: setup, initialize, and plan"
+    runs-on: ubuntu-latest 
+    env:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: checkout branch
+        uses: actions/checkout@v3
+
+      - name: "terraform: installing"
+        uses: hashicorp/setup-terraform@v2
+
+      - name: "terraform: init"
+        run: cd terraform; terraform init -upgrade
+        env:
+          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}        
+    
+      - name: "terraform: plan stage"
+        id: plan
+        run: cd terraform; terraform plan -no-color
+        env:
+          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
