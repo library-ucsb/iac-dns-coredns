@@ -3,32 +3,17 @@ variable "github_owner" {
     default = "library-ucsb"
 }
 
-variable "repo_name" {
-    type = string
-}
-
-variable "repo_description" {
-    type = string
-}
-
-variable "repo_tfc_org" {
-    type = string
-}
-
-variable "repo_tfc_working_directory" {
-    type    = string
-    default = "/"  
-}
-
-variable "repo_oauth_client_id" {
-    type = string
-}
-
-variable "repo_github_org" {
-    type = string
-}
-
 variable "hosted_zones" {
     type = list(string)
 }
 
+variable "repo" {
+  type = object({
+    name                        = string
+    description                 = string
+    github_organization         = string
+    github_enforce_admins       = bool
+    github_allows_force_pushes  = bool
+    github_push_restrictions    = list(string)
+  })
+}

@@ -1,13 +1,16 @@
 github_owner                = "library-ucsb"
-repo_name                   = "iac-dns-coredns"
-repo_description            = "coredns terraform"
-repo_oauth_client_id        = "oc-pga3NiSumJzwPVft"
-repo_tfc_org                = "library-ucsb-core"
-repo_tfc_working_directory  = "/terraform"
-repo_github_org             = "library-ucsb"
 
 hosted_zones = [
-    "arn:aws:route53:::hostedzone/Z0925576K83WAB2RR2FS",    # library.ucsb.edu
-    "arn:aws:route53:::hostedzone/Z05095443RZ2T3IXXE5VY",   # alexandria.ucsb.edu
-    "arn:aws:route53:::hostedzone/Z083898338YI6S69P5TIV"    # 87.111.128.in-addr.arpa
+    "arn:aws:route53:::hostedzone/Z02600803IA0I0TCHM0GV",       # library.ucsb.edu
+    "arn:aws:route53:::hostedzone/Z0698383335PF0QE6QOR1",       # alexandria.ucsb.edu
+    "arn:aws:route53:::hostedzone/Z01908603CS9OAOT0VQV8"        # 87.111.128.in-addr.arpa
 ]
+
+repo = {
+    name                            = "iac-dns-coredns"
+    description                     = "Contains IaC for the UCSB Library's CoreDNS Deployment"
+    github_organization             = "library-ucsb"
+    github_enforce_admins           = false
+    github_allows_force_pushes      = true
+    github_push_restrictions        = [] 
+}

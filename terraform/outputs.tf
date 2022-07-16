@@ -21,16 +21,8 @@ output "iam_secret_key" {
     sensitive               = true
 }
 
-output "github_repo_fullname" {
-    value                   = module.module-library_workspace.github_repo_full_name
-}
-
-output "github_repo_id" {
-    value                   = module.module-library_workspace.github_repo_id
-}
-
-output "github_repo_ssh_clone_url" {
-    value                   = module.module-library_workspace.github_repo_ssh_clone_url
+output "github_repository" {
+    value                   = module.github_repository
 }
 
 output "aws_secretsmanager_secret_coredns_access" {
