@@ -18,6 +18,11 @@ module "github_branch_protection" {
   allows_force_pushes       = var.repo.github_allows_force_pushes 
 }
 
+resource "github_branch_default" "main" {
+  repository                = module.github_repository.name
+  branch                    = "main"  
+}
+
 output "github_repository_project" {
     value = module.github_repository
 }
