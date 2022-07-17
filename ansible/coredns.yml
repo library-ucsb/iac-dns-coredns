@@ -1,13 +1,4 @@
 ---
-## Prerequisites
-##
-##   You need to set the following environment variables prior to executing ansible-playbook.
-##   To retrieve your TSS_TOKEN, login into Secret Server, select your profile icon (top right corner), 
-##   select User Preferences.  Click the 'Generate API Token and Copy to Clipboard' link.  Use this value
-##   for TSS_TOKEN.
-##
-##   $ export TSS_BASE_URL=https://epm.library.ucsb.edu
-##   $ export TSS_TOKEN=abcdefg12345
 
 - name: "CoreDNS integrated with Route53 - POC"
   hosts: bind_servers
@@ -18,24 +9,22 @@
     https_proxy: http://10.11.100.201:3128
   
   vars:
-    #ansible_become_password: "{{ ( (lookup('community.general.tss',  3003) | from_json).get('items') | items2dict(key_name='slug', value_name='itemValue'))[ 'password' ] }}"
-    #ssid_aws_keys: 3234
     coredns_base_path: "/home/coredns"
     ansible_become_password: "{{ lookup('amazon.aws.aws_secret', 'ANSIBLE_BECOME_PASSWORD', region='us-west-2') }}"
-    aws_secret_arns_file_path: ../tf/aws_secret_arns.yml
+    aws_secret_arns_file_path: ../terraform/aws_secret_arns.yml
 
     coredns_access: arn:aws:secretsmanager:us-west-2:406663345920:secret:service-coredns-AWS_ACCESS_KEY_ID-JJvEZZ
     coredns_secret: arn:aws:secretsmanager:us-west-2:406663345920:secret:service-coredns-AWS_SECRET_ACCESS_KEY-QfC9ey
 
     zones:
       - zonename: library.ucsb.edu
-        hosted_zone_id: "Z0925576K83WAB2RR2FS"
+        hosted_zone_id: "Z02600803IA0I0TCHM0GV"
         zone_refresh: "5m"
       - zonename: alexandria.ucsb.edu
-        hosted_zone_id: "Z05095443RZ2T3IXXE5VY"
+        hosted_zone_id: "Z0698383335PF0QE6QOR1"
         zone_refresh: "5m"
       - zonename: 87.111.128.in-addr.arpa
-        hosted_zone_id: "Z083898338YI6S69P5TIV"
+        hosted_zone_id: "Z01908603CS9OAOT0VQV8"
         zone_refresh: "5m"
 
 
@@ -55,8 +44,6 @@
         msg: "{{ arns_stat }}"
 
     - ansible.builtin.set_fact:
-        #aws_secret_access_key: "{{ ( (lookup('community.general.tss',  ssid_aws_keys) | from_json).get('items') | items2dict(key_name='slug', value_name='itemValue'))[ 'secret-key' ] }}"
-        #aws_access_key_id: "{{ ( (lookup('community.general.tss',  ssid_aws_keys) | from_json).get('items') | items2dict(key_name='slug', value_name='itemValue'))[ 'access-key' ] }}"
         aws_access_key_id: "{{ lookup('amazon.aws.aws_secret', 'service-coredns-AWS_ACCESS_KEY_ID', region='us-west-2') }}"
         aws_secret_access_key: "{{ lookup('amazon.aws.aws_secret', 'service-coredns-AWS_SECRET_ACCESS_KEY', region='us-west-2') }}"
 
