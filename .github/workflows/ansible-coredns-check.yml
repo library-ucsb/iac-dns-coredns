@@ -1,0 +1,73 @@
+
+
+name: "terraform: initialize, plan and deploy - route53 / coredns integration"
+on:
+  push:
+    branches:
+      - '!main'
+      - 'dev**'
+
+    paths:
+      - 'ansible/**'
+      - '.github/workflows/ansible-*.yml'
+    
+jobs:
+
+  playbook:
+    name: "ansible-playbook: coredns"
+    runs-on: [ self-hosted, linux ]
+    env:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    container: 
+      image: ghcr.io/library-ucsb/ansible-plays-dns-bind9/ansible-container:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        actor: ${{ github.actor }}
+    
+   
+    steps:
+      - name: checkout branch
+        uses: actions/checkout@v3
+
+      - name: create vault password file
+        run: |
+          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > ansible/ansible-vault-password-file.txt
+          chmod 0400 ansible/ansible-vault-password-file.txt
+      
+      - name: create ansible-vault ssh private key
+        run: |
+          echo "${{ secrets.ANSIBLE_DEPLOY_SSH_KEY }}" > ansible/ansible-ssh-private-key
+          chmod 0400 ansible/ansible-ssh-private-key
+
+      - name: run ansible
+        id: run_ansible
+        shell: bash
+        run: |
+          rc=0
+          
+          cd ansible
+          mkdir logs
+          ansible-playbook --inventory=inventory.yml coredns.yml \
+                           --vault-password-file=ansible-vault-password-file.txt \
+                           --user=ansible-deploy \
+                           --private-key=ansible-ssh-private-key \
+                           --diff --check
+
+          if [ $? -ne 0 ]; then
+            rc=1
+          fi
+
+          exit $rc             
+
+      - name: "publish: create artifact out of the ansible.log"
+        uses: actions/upload-artifact@v3
+        with:
+          name: logs-ansible-coredns-deploy
+          path: logs/*
+      
