@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - 'main'
+
     paths:
       - 'ansible/**'
       - '.github/workflows/ansible-*.yml'
@@ -21,7 +22,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     container: 
-      image: ghcr.io/library-ucsb/ansible-plays-dns-bind9/ansible-container:latest
+      image: ghcr.io/library-ucsb/iac-ansible-container/ansible-container:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
